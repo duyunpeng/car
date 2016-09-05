@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="pengyi.domain.model.car.Car" table="t_car">
+        <id name="id" type="java.lang.String" column="id" unsaved-value="-1" length="32">
+            <generator class="uuid"/>
+        </id>
+
+        <version name="version" type="java.lang.Integer" column="version"/>
+
+        <property name="name" column="name" type="java.lang.String"/>
+
+        <property name="carNumber" column="car_number" type="java.lang.String"/>
+
+        <many-to-one name="driver" column="driver_id" class="pengyi.domain.model.user.driver.Driver" unique="true"/>
+
+        <property name="carType" column="car_type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">pengyi.core.type.CarType</param>
+                <param name="type">4</param>
+            </type>
+        </property>
+    </class>
+
+</hibernate-mapping>

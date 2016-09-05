@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="pengyi.domain.model.withhold.Withhold" table="t_withhold">
+        <id name="id" type="java.lang.String" column="id" unsaved-value="-1" length="32">
+            <generator class="uuid"/>
+        </id>
+
+        <version name="version" type="java.lang.Integer" column="version" />
+
+        <many-to-one name="baseUser" column="user_id" class="pengyi.domain.model.user.BaseUser" />
+
+        <property name="createTime" column="create_time" type="java.util.Date"  />
+
+        <property name="money" column="money" type="java.math.BigDecimal" />
+
+        <property name="detail" column="detail" type="java.lang.String" />
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="pengyi.domain.model.evaluate.Evaluate" table="t_evaluate">
+        <id name="id" type="java.lang.String" column="id" unsaved-value="-1" length="32">
+            <generator class="uuid"/>
+        </id>
+
+        <version name="version" type="java.lang.Integer" column="version" />
+
+        <many-to-one name="evaluateUser" column="evaluate_user_id" class="pengyi.domain.model.user.BaseUser" fetch="join" />
+
+        <many-to-one name="order" column="order_id" class="pengyi.domain.model.order.Order" fetch="join" />
+
+        <property name="content" column="content" type="java.lang.String" />
+
+        <property name="level" column="level" type="java.lang.Integer" />
+
+        <property name="createDate" column="create_date" type="java.util.Date" />
+    </class>
+
+</hibernate-mapping>

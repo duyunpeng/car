@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- Hibernate -->
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+
+
+        <property name="idleConnectionTestPeriodInMinutes" value="${bonecp.idleConnectionTestPeriodInMinutes}" />
+        <property name="idleMaxAgeInMinutes" value="${bonecp.idleMaxAgeInMinutes}" />
+        <property name="maxConnectionsPerPartition" value="${bonecp.maxConnectionsPerPartition}" />
+        <property name="minConnectionsPerPartition" value="${bonecp.minConnectionsPerPartition}" />
+        <property name="partitionCount" value="${bonecp.partitionCount}" />
+        <property name="acquireIncrement" value="${bonecp.acquireIncrement}" />
+        <property name="statementsCacheSize" value="${bonecp.statementsCacheSize}" />
+        <!--<property name="releaseHelperThreads" value="${bonecp.releaseHelperThreads}" />-->
+        <!--<property name="statementReleaseHelperThreads" value="${bonecp.statementReleaseHelperThreads}" />-->
+
+        <property name="deregisterDriverOnClose" value="true" />
+    </bean>
+
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl}</prop>
+                <prop key="hibernate.autoReconnect">${hibernate.autoReconnect}</prop>
+
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>pengyi.domain.model</value>
+            </list>
+        </property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:mapping/*.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="transactionManager"
+      class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+          <property name="sessionFactory" ref="sessionFactory"/>
+      </bean>
+    <tx:annotation-driven />
+
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="get*" read-only="true" propagation="REQUIRED" />-->
+            <!--<tx:method name="load*" read-only="true" propagation="REQUIRED" />-->
+            <!--<tx:method name="find*" read-only="true" propagation="REQUIRED" />-->
+            <!--<tx:method name="exists*" read-only="true" propagation="REQUIRED" />-->
+            <!--<tx:method name="create*" propagation="REQUIRED" rollback-for="Exception" />-->
+            <!--<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception" />-->
+            <!--<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />-->
+            <!--<tx:method name="pagination*" propagation="REQUIRED" rollback-for="Exception" />-->
+            <!--<tx:method name="split*" propagation="REQUIRED" rollback-for="Exception" />-->
+
+
+            <!--&lt;!&ndash;default REQUIRED&ndash;&gt;-->
+            <!--<tx:method name="*" propagation="REQUIRED" />-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!--<aop:config proxy-target-class="true">-->
+        <!--<aop:pointcut id="servicePointcut"-->
+                      <!--expression="execution(* me.ethantu.recharge.queen.domain.service..*.*(..))" />-->
+        <!--<aop:advisor pointcut-ref="servicePointcut" advice-ref="txAdvice" />-->
+    <!--</aop:config>-->
+
+    <!-- Redis -->
+    <!--<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+        <!--<property name="maxTotal" value="${redis.maxTotal}" />-->
+        <!--<property name="maxIdle" value="${redis.maxIdle}" />-->
+        <!--<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />-->
+        <!--<property name="testOnBorrow" value="${redis.testOnBorrow}" />-->
+        <!--<property name="testOnReturn" value="${redis.testOnReturn}" />-->
+    <!--</bean>-->
+
+    <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">-->
+        <!--<property name="hostName" value="${redis.host}" />-->
+        <!--<property name="port" value="${redis.port}" />-->
+        <!--<property name="password" value="${redis.pass}" />-->
+        <!--<property name="poolConfig" ref="jedisPoolConfig"  />-->
+    <!--</bean>-->
+
+    <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
+        <!--<property name="connectionFactory" ref="connectionFactory"></property>-->
+        <!--<property name="keySerializer">-->
+           <!--<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
+        <!--</property>-->
+        <!--<property name="valueSerializer">-->
+           <!--<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!-- End Redis -->
+</beans>

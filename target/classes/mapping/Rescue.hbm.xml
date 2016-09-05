@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="pengyi.domain.model.rescue.Rescue" table="t_rescue">
+        <id name="id" type="java.lang.String" column="id" unsaved-value="-1" length="32">
+            <generator class="uuid"/>
+        </id>
+
+        <version name="version" type="java.lang.Integer" column="version"/>
+
+        <many-to-one name="applyUser" column="apply_user_id" class="pengyi.domain.model.user.BaseUser"/>
+
+        <property name="applyTime" column="apply_time" type="java.util.Date"/>
+
+        <property name="rescueType" column="rescue_type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">pengyi.core.type.RescueType</param>
+                <param name="type">4</param>
+            </type>
+        </property>
+
+        <property name="description" column="description" type="java.lang.String"/>
+
+        <many-to-one name="driver" column="driver_id" class="pengyi.domain.model.user.driver.Driver"/>
+
+        <property name="rescueTime" column="rescue_time" type="java.util.Date"/>
+
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">pengyi.core.type.RescueStatus</param>
+                <param name="type">4</param>
+            </type>
+        </property>
+
+        <property name="finishTime" column="finish_time" type="java.util.Date"/>
+
+        <property name="images" column="images" type="java.lang.String"/>
+
+        <property name="rescueAddress" column="rescue_address" type="java.lang.String"/>
+
+        <property name="name" column="name" type="java.lang.String"/>
+        <property name="phone" column="phone" type="java.lang.String"/>
+
+        <many-to-one name="area" column="area" class="pengyi.domain.model.area.Area" />
+    </class>
+
+</hibernate-mapping>

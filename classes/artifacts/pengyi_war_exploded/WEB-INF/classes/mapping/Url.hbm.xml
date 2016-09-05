@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="pengyi.domain.model.urlresources.UrlResources" table="t_url">
+        <id name="id" type="java.lang.String" column="id" unsaved-value="-1" length="32">
+            <generator class="uuid"/>
+        </id>
+
+        <version name="version" type="java.lang.Integer" column="version"/>
+
+        <property name="urlName" column="url_name" type="java.lang.String"/>
+
+        <property name="description" column="description" type="java.lang.String"/>
+
+        <list name="urlPermission" table="t_url_permission" fetch="join">
+            <key column="url_id"/>
+            <index column="_index"/>
+            <many-to-many column="permission_id" class="pengyi.domain.model.permission.Permission"/>
+        </list>
+
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">pengyi.core.type.EnableStatus</param>
+                <param name="type">4</param>
+            </type>
+        </property>
+    </class>
+
+</hibernate-mapping>
